@@ -1,24 +1,61 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import TodoTemplate from "./Components/TodoTemplate";
+import TodoInsert from "./Components/TodoInsert";
+import TodoList from "./Components/TodoList";
+import React, { useState, useRef, useCallback } from "react";
+
+function createBulkTodo() {
+  const array = [];
+  for (let i = 1; i <= 2500; i++) {
+    array.push({
+      id: i,
+      text: `할 일 ${i}`,
+      checked: false,
+    });
+  }
+  return array;
+}
 
 function App() {
+  // const [todos, setTodos] = useState([
+  //   { id: 1, text: "리액트의 기초 알아보기", checked: true },
+  //   { id: 2, text: "컴포넌트 스타일링 해보기", checked: true },
+  //   { id: 3, text: "일정 관리 앱 만들어 보기", checked: false },
+  // ]);
+  const [todos, setTodos] = useState(createBulkTodo());
+
+  // 고유값으로 사용될 id
+  // ref를 사용하여 변수 담기
+  const nextId = useRef(2501);
+
+  const onInsert = useCallback((text) => {
+    const todo = {
+      id: nextId.current,
+      text,
+      checked: false,
+    };
+    setTodos((todos) => todos.concat(todo));
+    nextId.current += 1; //nextId 1씩 더하기
+  }, []);
+
+  const onRemove = useCallback((id) => {
+    setTodos((todos) => todos.filter((todo) => todo.id !== id));
+  }, []);
+
+  const onToggle = useCallback((id) => {
+    setTodos((todos) =>
+      todos.map((todo) =>
+        todo.id === id ? { ...todo, checked: !todo.checked } : todo
+      )
+    );
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <TodoTemplate>
+      <TodoInsert onInsert={onInsert} />
+      <TodoList todos={todos} onRemove={onRemove} onToggle={onToggle} />
+    </TodoTemplate>
   );
 }
 
