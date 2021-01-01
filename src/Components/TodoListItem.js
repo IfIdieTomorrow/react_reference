@@ -10,16 +10,18 @@ import "./TodoListItem.scss";
 const TodoListItem = (props) => {
   const { id, text, checked } = props.todo;
   return (
-    <div className="TodoListItem">
-      <div
-        className={cn("checkbox", { checked })}
-        onClick={() => props.onToggle(id)}
-      >
-        {checked ? <MdCheckBox /> : <MdCheckBoxOutlineBlank />}
-        <div className="text">{text}</div>
-      </div>
-      <div className="remove" onClick={() => props.onRemove(id)}>
-        <MdRemoveCircleOutline />
+    <div className="TodoListItem-virtualized" style={props.style}>
+      <div className="TodoListItem">
+        <div
+          className={cn("checkbox", { checked })}
+          onClick={() => props.onToggle(id)}
+        >
+          {checked ? <MdCheckBox /> : <MdCheckBoxOutlineBlank />}
+          <div className="text">{text}</div>
+        </div>
+        <div className="remove" onClick={() => props.onRemove(id)}>
+          <MdRemoveCircleOutline />
+        </div>
       </div>
     </div>
   );
