@@ -8,6 +8,7 @@ const getAverage = (numbers) => {
 };
 
 const Average = () => {
+    //
     const [list, setList] = useState([]);
     const [number, setNumber] = useState('');
     // ref를 선언
@@ -17,6 +18,7 @@ const Average = () => {
         setNumber(e.target.value);
     }, []); // 컴포넌트가 처음 렌더링될 때만 함수 생성
 
+    // onIsert 같은 경우에는 number와 list를 조회하기 때문에 꼭 배열에 넣어주어야 한다.
     const onInsert = useCallback(() => {
         const nextList = list.concat(parseInt(number));
         setList(nextList);
